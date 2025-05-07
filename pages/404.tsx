@@ -15,10 +15,10 @@ export default function Custom404() {
           </h2>
           <div className="mt-4 text-center">
             <p className="text-gray-600 font-medium">
-              The page you're looking for doesn't exist.
+              The page you&apos;re looking for doesn&apos;t exist.
             </p>
             <p className="mt-2 text-sm text-gray-500">
-              Let's get you back to the plant tracker.
+              Let&apos;s get you back to the plant tracker.
             </p>
           </div>
         </div>
