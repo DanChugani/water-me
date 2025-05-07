@@ -42,7 +42,7 @@ export default async function handler(
       console.log('New watering event:', JSON.stringify(newEvent));
       
       // Use findOneAndUpdate to ensure we get the updated document back
-      let plant = await Plant.findOneAndUpdate(
+      const plant = await Plant.findOneAndUpdate(
         {}, // find the first document
         {
           $set: {

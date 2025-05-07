@@ -1,10 +1,6 @@
-import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
 
 export default function ErrorPage() {
-  const router = useRouter();
-  const { error } = router.query;
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl">

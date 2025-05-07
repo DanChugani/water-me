@@ -1,7 +1,8 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import { NextAuthOptions } from 'next-auth';
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID!,
@@ -9,14 +10,14 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }: any) {
+    async signIn({ user }) {
       const email = user.email as string;
       if (email.endsWith('@identos.ca')) {
         return true;
       }
       return false; // Reject sign in for other domains
     },
-    async session({ session, token }: any) {
+    async session({ session }) {
       return session;
     },
   },

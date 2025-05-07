@@ -1,7 +1,7 @@
 import { useSession, signOut } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Plant, WateringEvent } from '../types/plant';
+import { Plant } from '../types/plant';
 import { formatEmailToName } from '../utils/format';
 import ConfirmModal from '../components/ConfirmModal';
 import toast from 'react-hot-toast';
@@ -46,14 +46,15 @@ export default function Home() {
         lastWatered: data.lastWatered ? new Date(data.lastWatered) : null,
         isWatered: data.isWatered,
         lastUpdatedBy: data.lastUpdatedBy,
-        wateringHistory: (data.wateringHistory || []).map((e: any) => ({
-          date: new Date(e.date),
-          user: e.user,
-          note: e.note,
+        wateringHistory: (data.wateringHistory || []).map((e: Record<string, unknown>) => ({
+          date: new Date(e.date as string),
+          user: e.user as string,
+          note: e.note as string,
         })),
       });
-    } catch (err) {
+    } catch (error) {
       setError('Could not load plant data.');
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -85,10 +86,10 @@ export default function Home() {
         lastWatered: data.lastWatered ? new Date(data.lastWatered) : null,
         isWatered: data.isWatered,
         lastUpdatedBy: data.lastUpdatedBy,
-        wateringHistory: (data.wateringHistory || []).map((e: any) => ({
-          date: new Date(e.date),
-          user: e.user,
-          note: e.note,
+        wateringHistory: (data.wateringHistory || []).map((e: Record<string, unknown>) => ({
+          date: new Date(e.date as string),
+          user: e.user as string,
+          note: e.note as string,
         })),
       };
       console.log('Parsed Plant Data:', updatedPlant);
@@ -143,12 +144,6 @@ export default function Home() {
       lastWatered: new Date(),
       isWatered: true,
       note,
-    });
-  };
-
-  const handleReset = () => {
-    updatePlant({
-      isWatered: false,
     });
   };
 
@@ -253,7 +248,7 @@ export default function Home() {
                 <svg className="h-5 w-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                 </svg>
-                <span className="italic">"{plant.wateringHistory[0].note}"</span>
+                <span className="italic">&quot;{plant.wateringHistory[0].note}&quot;</span>
               </div>
             )}
           </div>
@@ -304,7 +299,7 @@ export default function Home() {
                         <svg className="h-4 w-4 mr-1 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                         </svg>
-                        <span className="text-gray-600">"{event.note}"</span>
+                        <span className="text-gray-600">&quot;{event.note}&quot;</span>
                       </div>
                     )}
                   </div>
