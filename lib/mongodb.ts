@@ -15,7 +15,6 @@ if (!process.env.MONGODB_URI) {
 }
 
 const MONGODB_URI = process.env.MONGODB_URI;
-console.log('MongoDB URI found:', MONGODB_URI ? 'Yes' : 'No');
 
 const cached: MongooseCache = global.mongoose || { conn: null, promise: null };
 
@@ -25,26 +24,20 @@ if (!global.mongoose) {
 
 async function connectDB() {
   if (cached.conn) {
-    console.log('Using cached MongoDB connection');
     return cached.conn;
   }
 
   if (!cached.promise) {
-    console.log('Creating new MongoDB connection...');
     const opts = {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      console.log('MongoDB connected successfully');
-      return mongoose;
-    });
+    cached.promise = mongoose.connect(MONGODB_URI, opts);
   }
 
   try {
     cached.conn = await cached.promise;
   } catch (e) {
-    console.error('MongoDB connection error:', e);
     cached.promise = null;
     throw e;
   }

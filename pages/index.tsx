@@ -29,39 +29,27 @@ export default function Home() {
   const [note, setNote] = useState('');
 
   useEffect(() => {
-    console.log('Auth status changed:', status);
-    console.log('Session data:', session);
-    
     if (status === 'unauthenticated') {
-      console.log('User is not authenticated, redirecting to sign in...');
       router.replace('/auth/signin');
       return;
     }
     
     if (status === 'authenticated') {
-      console.log('User is authenticated, fetching plant data...');
       fetchPlant();
     }
   }, [status, session, router]);
 
   const fetchPlant = async () => {
-    console.log('Starting to fetch plant data...');
     setLoading(true);
     setError(null);
     try {
-      console.log('Making API request to /api/plant...');
       const res = await fetch('/api/plant');
-      console.log('API response status:', res.status);
-      
       if (!res.ok) {
         const errorData = await res.json();
-        console.error('API error response:', errorData);
         throw new Error(errorData.error || 'Failed to fetch plant data');
       }
       
       const data = await res.json();
-      console.log('Received plant data:', data);
-      
       setPlant({
         name: 'Office Plants',
         lastWatered: data.lastWatered ? new Date(data.lastWatered) : null,
@@ -73,12 +61,10 @@ export default function Home() {
           note: e.note as string,
         })),
       });
-      console.log('Plant state updated successfully');
     } catch (error) {
-      console.error('Error in fetchPlant:', error);
+      console.error('Error fetching plant data:', error);
       setError('Could not load plant data.');
     } finally {
-      console.log('Setting loading to false');
       setLoading(false);
     }
   };
@@ -93,7 +79,6 @@ export default function Home() {
         lastUpdatedBy: session?.user?.email || '',
         note: update.note || '',
       };
-      console.log('Sending to API:', requestBody);
       
       const res = await fetch('/api/plant', {
         method: 'POST',
@@ -102,7 +87,6 @@ export default function Home() {
       });
       if (!res.ok) throw new Error('Failed to update plant');
       const data = await res.json();
-      console.log('Received from API:', data);
       
       const updatedPlant = {
         name: 'Office Plants',
@@ -115,7 +99,6 @@ export default function Home() {
           note: e.note as string,
         })),
       };
-      console.log('Parsed Plant Data:', updatedPlant);
       setPlant(updatedPlant);
       toast.success('Plant watered!');
     } catch (err) {

@@ -7,16 +7,12 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    console.log('Attempting to connect to MongoDB...');
     await connectDB();
-    console.log('Successfully connected to MongoDB');
 
     if (req.method === 'GET') {
-      console.log('Fetching plant data...');
       let plant = await Plant.findOne().sort({ createdAt: -1 });
       
       if (!plant) {
-        console.log('No plant found, creating new plant...');
         plant = await Plant.create({
           isWatered: false,
           lastWatered: null,
@@ -31,19 +27,15 @@ export default async function handler(
         await plant.save();
       }
       
-      console.log('GET response:', JSON.stringify(plant));
       res.status(200).json(plant);
     } else if (req.method === 'POST') {
-      console.log('POST received:', JSON.stringify(req.body));
       const { isWatered, lastWatered, lastUpdatedBy, note } = req.body;
-      console.log('Extracted note:', note);
       
       const newEvent = {
         date: lastWatered || new Date(),
         user: lastUpdatedBy,
         note: note || '',
       };
-      console.log('New watering event:', JSON.stringify(newEvent));
       
       // Use findOneAndUpdate to ensure we get the updated document back
       const plant = await Plant.findOneAndUpdate(
@@ -71,19 +63,13 @@ export default async function handler(
         }
       );
       
-      console.log('POST response:', JSON.stringify(plant));
       res.status(200).json(plant);
     } else {
       res.setHeader('Allow', ['GET', 'POST']);
       res.status(405).end(`Method ${req.method} Not Allowed`);
     }
   } catch (error) {
-    console.error('Database error details:', error);
-    if (error instanceof Error) {
-      console.error('Error name:', error.name);
-      console.error('Error message:', error.message);
-      console.error('Error stack:', error.stack);
-    }
-    res.status(500).json({ error: 'Failed to process request', details: error instanceof Error ? error.message : 'Unknown error' });
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'Failed to process request' });
   }
 } 
