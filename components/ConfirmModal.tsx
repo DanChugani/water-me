@@ -21,19 +21,23 @@ export default function ConfirmModal({
   onCancel,
 }: ConfirmModalProps) {
   const cancelRef = useRef<HTMLButtonElement>(null);
+  const wasOpen = useRef(false);
 
   useEffect(() => {
-    if (open && cancelRef.current) {
+    if (open && !wasOpen.current && cancelRef.current) {
       cancelRef.current.focus();
+      wasOpen.current = true;
+    } else if (!open) {
+      wasOpen.current = false;
     }
     const handleKey = (e: KeyboardEvent) => {
       if (!open) return;
-      // Only handle Escape for closing. Enter key will be handled by the form
-      if (e.key === 'Escape') onCancel();
-      
-      // Prevent Enter key from automatically clicking buttons
-      // Let the input handle enter for line breaks
-      if (e.key === 'Enter' && !(e.target instanceof HTMLTextAreaElement)) {
+      // Only handle Escape for closing, and only if not in an input/textarea
+      if (e.key === 'Escape' && !(e.target instanceof HTMLInputElement) && !(e.target instanceof HTMLTextAreaElement)) {
+        onCancel();
+      }
+      // Only handle Enter for confirm if not in an input or textarea
+      if (e.key === 'Enter' && !(e.target instanceof HTMLInputElement) && !(e.target instanceof HTMLTextAreaElement)) {
         e.preventDefault();
         onConfirm();
       }

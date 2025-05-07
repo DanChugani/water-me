@@ -31,10 +31,13 @@ export default async function handler(
     } else if (req.method === 'POST') {
       const { isWatered, lastWatered, lastUpdatedBy, note } = req.body;
       
+      // Sanitize note to prevent XSS
+      const sanitize = (str: string) => str.replace(/<[^>]*>?/gm, '');
+      const safeNote = note ? sanitize(note) : '';
       const newEvent = {
         date: lastWatered || new Date(),
         user: lastUpdatedBy,
-        note: note || '',
+        note: safeNote,
       };
       
       // Use findOneAndUpdate to ensure we get the updated document back

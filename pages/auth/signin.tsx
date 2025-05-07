@@ -9,14 +9,11 @@ export default function SignIn() {
             <span className="text-4xl">🌿</span>
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
-            Welcome to Plant Tracker
+            Welcome to the IDENTOS Plant Tracker
           </h2>
           <div className="mt-4 text-center">
             <p className="text-gray-600 font-medium">
-              Please sign in with your Identos email
-            </p>
-            <p className="mt-2 text-sm text-gray-500">
-              (@identos.ca)
+              Please sign in with your IDENTOS email
             </p>
           </div>
         </div>

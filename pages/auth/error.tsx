@@ -13,10 +13,10 @@ export default function ErrorPage() {
           </h2>
           <div className="mt-4 text-center">
             <p className="text-gray-600 font-medium">
-              This application is only available to Identos employees.
+              This application is only available to IDENTOS employees.
             </p>
             <p className="mt-2 text-sm text-gray-500">
-              Please sign in with your @identos.ca email address.
+              Please sign in with your work email.
             </p>
           </div>
         </div>

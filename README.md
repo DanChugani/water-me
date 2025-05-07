@@ -4,7 +4,7 @@ A modern, internal web application for tracking the watering status of office pl
 
 ## Features
 - 🌱 Track watering status and history for shared office plants
-- Google authentication (Identos email only)
+- Google authentication (IDENTOS email only)
 - Watering history log with user and timestamp
 - Visual status indicators for plant health
 - Responsive, modern UI with TailwindCSS
@@ -52,7 +52,7 @@ npm run dev
 Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Usage
-- Sign in with your Identos Google account
+- Sign in with your IDENTOS Google account
 - View plant status and watering history
 - Mark a plant as watered and add optional notes
 - Only authenticated users can access the app
@@ -60,7 +60,7 @@ Visit [http://localhost:3000](http://localhost:3000) in your browser.
 ## Security & Privacy
 - All secrets are stored in `.env.local` (not tracked by git)
 - The app is internal-only and blocks search engine indexing via `robots.txt`
-- Only Identos email addresses are allowed to sign in
+- Only IDENTOS email addresses are allowed to sign in
 
 ## Deployment
 - Configure production environment variables as above

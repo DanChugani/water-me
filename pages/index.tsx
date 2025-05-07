@@ -188,7 +188,7 @@ export default function Home() {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
-                IDENTOS Plant Tracker 🌿
+                IDENTOS Plant Tracker
               </h1>
               <p className="text-gray-600 mt-1">
                 Welcome, {formatEmailToName(session?.user?.email || '')}
@@ -212,7 +212,14 @@ export default function Home() {
         {/* Plant Status Card */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 mb-8 relative">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">{plant.name}</h2>
+            <div className="flex items-center gap-4">
+              <img
+                src="/plant-avatar.png"
+                alt="Plant avatar"
+                className="h-14 w-14 rounded-full border-2 border-emerald-400 bg-white object-cover shadow"
+              />
+              <h2 className="text-2xl font-bold text-gray-900">{plant.name}</h2>
+            </div>
             <div className="flex items-center">
               <span
                 key={waterStatus.label + waterStatus.color}
