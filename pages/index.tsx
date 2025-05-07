@@ -29,18 +29,39 @@ export default function Home() {
   const [note, setNote] = useState('');
 
   useEffect(() => {
+    console.log('Auth status changed:', status);
+    console.log('Session data:', session);
+    
+    if (status === 'unauthenticated') {
+      console.log('User is not authenticated, redirecting to sign in...');
+      router.replace('/auth/signin');
+      return;
+    }
+    
     if (status === 'authenticated') {
+      console.log('User is authenticated, fetching plant data...');
       fetchPlant();
     }
-  }, [status]);
+  }, [status, session, router]);
 
   const fetchPlant = async () => {
+    console.log('Starting to fetch plant data...');
     setLoading(true);
     setError(null);
     try {
+      console.log('Making API request to /api/plant...');
       const res = await fetch('/api/plant');
-      if (!res.ok) throw new Error('Failed to fetch plant data');
+      console.log('API response status:', res.status);
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        console.error('API error response:', errorData);
+        throw new Error(errorData.error || 'Failed to fetch plant data');
+      }
+      
       const data = await res.json();
+      console.log('Received plant data:', data);
+      
       setPlant({
         name: 'Office Plants',
         lastWatered: data.lastWatered ? new Date(data.lastWatered) : null,
@@ -52,10 +73,12 @@ export default function Home() {
           note: e.note as string,
         })),
       });
+      console.log('Plant state updated successfully');
     } catch (error) {
+      console.error('Error in fetchPlant:', error);
       setError('Could not load plant data.');
-      console.error(error);
     } finally {
+      console.log('Setting loading to false');
       setLoading(false);
     }
   };
@@ -190,7 +213,8 @@ export default function Home() {
             </div>
             <button
               onClick={() => signOut({ 
-                callbackUrl: '/auth/signin'
+                callbackUrl: '/auth/signin',
+                redirect: true
               })}
               className="flex items-center gap-2 px-5 py-2 text-sm font-semibold rounded-full bg-gradient-to-r from-emerald-500 to-blue-500 text-white shadow-md hover:from-emerald-600 hover:to-blue-600 hover:scale-105 active:scale-95 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-emerald-400 cursor-pointer"
             >

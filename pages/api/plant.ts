@@ -7,12 +7,16 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
+    console.log('Attempting to connect to MongoDB...');
     await connectDB();
+    console.log('Successfully connected to MongoDB');
 
     if (req.method === 'GET') {
+      console.log('Fetching plant data...');
       let plant = await Plant.findOne().sort({ createdAt: -1 });
       
       if (!plant) {
+        console.log('No plant found, creating new plant...');
         plant = await Plant.create({
           isWatered: false,
           lastWatered: null,
@@ -74,7 +78,12 @@ export default async function handler(
       res.status(405).end(`Method ${req.method} Not Allowed`);
     }
   } catch (error) {
-    console.error('Database error:', error);
-    res.status(500).json({ error: 'Failed to process request' });
+    console.error('Database error details:', error);
+    if (error instanceof Error) {
+      console.error('Error name:', error.name);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    }
+    res.status(500).json({ error: 'Failed to process request', details: error instanceof Error ? error.message : 'Unknown error' });
   }
 } 
