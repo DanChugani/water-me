@@ -194,7 +194,9 @@ export default function Home() {
               </p>
             </div>
             <button
-              onClick={() => signOut()}
+              onClick={() => signOut({ 
+                callbackUrl: '/auth/signin'
+              })}
               className="flex items-center gap-2 px-5 py-2 text-sm font-semibold rounded-full bg-gradient-to-r from-emerald-500 to-blue-500 text-white shadow-md hover:from-emerald-600 hover:to-blue-600 hover:scale-105 active:scale-95 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-emerald-400 cursor-pointer"
             >
               <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
